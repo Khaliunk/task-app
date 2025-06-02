@@ -4,14 +4,9 @@ import 'package:todo_list/main.dart';
 import 'package:todo_list/models/task.dart';
 import 'package:todo_list/view/home/widgets/task_item.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class CompletedTask extends StatelessWidget {
+  const CompletedTask({super.key});
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final base = BaseApp.of(context);
@@ -20,21 +15,22 @@ class _HomeScreenState extends State<HomeScreen> {
         valueListenable: base.hiveDataStore.getTaskListenable(),
         builder: (context, Box<Task> box, child) {
           var tasks = box.values.toList();
-          tasks.sort((a, b) => a.selectedDate.compareTo(b.selectedDate));
+          var completedList = tasks.where((test) => test.isCompleted == true).toList();
           
-          if (tasks.isEmpty) {
-            return Center(
+          if (completedList.isEmpty) {
+            return Padding(
+              padding: const EdgeInsets.all(20.0),
               child: Text(
-                'Таск байхгүй байна',
+                'Таньд дуусгасан таск байхгүй байна...',
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
             );
           }else{
 
           return ListView.builder(
-            itemCount: tasks.length,
+            itemCount: completedList.length,
             itemBuilder: (context, index) {
-              final task = tasks[index];
+              final task = completedList[index];
               return TaskItem(task: task);
             },
           );

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list/common/utils/toasts.dart';
+import 'package:todo_list/common/utils/utils.dart';
 import 'package:todo_list/view/home/home_screen.dart';
+import 'package:todo_list/view/tasks/completed_task.dart';
 import 'package:todo_list/view/tasks/task_screen.dart';
+import 'package:todo_list/view/tasks/uncompleted_tasks.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -12,19 +16,30 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
-  List<Widget> _screens = [
-    const HomeScreen(),
-    const TaskScreen(title: 'Completed Tasks'),
+  final List<Widget> _screens = [
+     HomeScreen(),
+     CompletedTask(),
+     UnCompletedTask()
   ];
 
   void _onItemTapped(int index) {
-    _selectedIndex = index;
+    setState(() {
+      _selectedIndex = index;
+    });
+    
   }
-
+Future<void> someAction() async {
+  bool isConnected = await checkInternetConnection();
+  if (!isConnected) {
+    showErrorToast('Интернет холболт алга байна. Дахин оролдоно уу.');
+    return;
+  }
+  // Proceed with network request or other logic
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('All tasks')),
+      appBar: AppBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
@@ -38,10 +53,14 @@ class _MainScreenState extends State<MainScreen> {
 
       bottomNavigationBar: BottomNavigationBar(
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'All Tasks'),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Бүх Таск'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Completed Tasks',
+            icon: Icon(Icons.check_box),
+            label: 'Дууссан Таск',
+          ),
+           BottomNavigationBarItem(
+            icon: Icon(Icons.indeterminate_check_box),
+            label: 'Дуусгаагүй Таск',
           ),
         ],
         currentIndex: _selectedIndex,
