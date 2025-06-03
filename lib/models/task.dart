@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
 
 part 'task.g.dart';
@@ -21,12 +22,11 @@ class Task extends HiveObject {
 
   @HiveField(5)
   bool isCompleted;
-  
 
   Task({
     required this.title,
     required this.subtitle,
-    required this.isCompleted ,
+    required this.isCompleted,
     required this.id,
     required this.selectedTime,
     required this.selectedDate,
@@ -36,14 +36,14 @@ class Task extends HiveObject {
   String toString() {
     return 'Task(title: $title, subtitle: $subtitle, isCompleted: $isCompleted)';
   }
-  
+
   factory Task.create({
-     String? id,
+    String? id,
     required String? title,
     required String? subtitle,
     required DateTime? selectedDate,
     required DateTime? selectedTime,
-     bool? isCompleted,
+    bool? isCompleted,
   }) {
     return Task(
       id: id ?? "${DateTime.now().millisecondsSinceEpoch}",
@@ -71,33 +71,42 @@ class Task extends HiveObject {
       id: map["id"] ?? "${DateTime.now().millisecondsSinceEpoch}",
       title: map["title"] ?? "",
       subtitle: map["subtitle"] ?? "",
-      selectedDate: map["selectedDate"] is DateTime
-          ? map["selectedDate"]
-          : DateTime.tryParse(map["selectedDate"]?.toString() ?? "") ?? DateTime.now(),
-      selectedTime: map["selectedTime"] is DateTime
-          ? map["selectedTime"]
-          : DateTime.tryParse(map["selectedTime"]?.toString() ?? "") ?? DateTime.now(),
-      isCompleted: map["isCompleted"] is bool
-          ? map["isCompleted"]
-          : (map["isCompleted"]?.toString() == "true"),
+      selectedDate:
+          map["selectedDate"] is DateTime
+              ? map["selectedDate"]
+              : DateTime.tryParse(map["selectedDate"]?.toString() ?? "") ??
+                  DateTime.now(),
+      selectedTime:
+          map["selectedTime"] is DateTime
+              ? map["selectedTime"]
+              : DateTime.tryParse(map["selectedTime"]?.toString() ?? "") ??
+                  DateTime.now(),
+      isCompleted:
+          map["isCompleted"] is bool
+              ? map["isCompleted"]
+              : (map["isCompleted"]?.toString() == "true"),
     );
   }
 
-  factory Task.fromSnapshot(Map<String, dynamic> snapshot) {
+  factory Task.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snapshot) {
     return Task(
       id: snapshot["id"] ?? "${DateTime.now().millisecondsSinceEpoch}",
       title: snapshot["title"] ?? "",
       subtitle: snapshot["subtitle"] ?? "",
-      selectedDate: snapshot["selectedDate"] is DateTime
-          ? snapshot["selectedDate"]
-          : DateTime.tryParse(snapshot["selectedDate"]?.toString() ?? "") ?? DateTime.now(),
-      selectedTime: snapshot["selectedTime"] is DateTime
-          ? snapshot["selectedTime"]
-          : DateTime.tryParse(snapshot["selectedTime"]?.toString() ?? "") ?? DateTime.now(),
-      isCompleted: snapshot["isCompleted"] is bool
-          ? snapshot["isCompleted"]
-          : (snapshot["isCompleted"]?.toString() == "true"),
+      selectedDate:
+          snapshot["selectedDate"] is DateTime
+              ? snapshot["selectedDate"]
+              : DateTime.tryParse(snapshot["selectedDate"]?.toString() ?? "") ??
+                  DateTime.now(),
+      selectedTime:
+          snapshot["selectedTime"] is DateTime
+              ? snapshot["selectedTime"]
+              : DateTime.tryParse(snapshot["selectedTime"]?.toString() ?? "") ??
+                  DateTime.now(),
+      isCompleted:
+          snapshot["isCompleted"] is bool
+              ? snapshot["isCompleted"]
+              : (snapshot["isCompleted"]?.toString() == "true"),
     );
   }
-
 }
