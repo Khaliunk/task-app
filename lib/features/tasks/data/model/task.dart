@@ -21,15 +21,19 @@ class Task extends HiveObject {
   DateTime selectedDate;
 
   @HiveField(5)
-  bool isCompleted;
+  bool? isCompleted;
+
+  @HiveField(6)
+  bool? isSynced;
 
   Task({
     required this.title,
     required this.subtitle,
-    required this.isCompleted,
+    this.isCompleted = false,
     required this.id,
     required this.selectedTime,
     required this.selectedDate,
+    this.isSynced = false,
   });
 
   @override
@@ -44,6 +48,7 @@ class Task extends HiveObject {
     required DateTime? selectedDate,
     required DateTime? selectedTime,
     bool? isCompleted,
+    bool? isSynced,
   }) {
     return Task(
       id: id ?? "${DateTime.now().millisecondsSinceEpoch}",
@@ -52,6 +57,7 @@ class Task extends HiveObject {
       selectedDate: selectedDate ?? DateTime.now(),
       selectedTime: selectedTime ?? DateTime.now(),
       isCompleted: isCompleted ?? false,
+      isSynced: isSynced ?? false,
     );
   }
 
@@ -63,6 +69,7 @@ class Task extends HiveObject {
       "selectedDate": selectedDate,
       "selectedTime": selectedTime,
       "isCompleted": isCompleted,
+      "isSynced": isSynced,
     };
   }
 
@@ -85,6 +92,10 @@ class Task extends HiveObject {
           map["isCompleted"] is bool
               ? map["isCompleted"]
               : (map["isCompleted"]?.toString() == "true"),
+      isSynced:
+          map["isSynced"] is bool
+              ? map["isSynced"]
+              : (map["isSynced"]?.toString() == "true",),
     );
   }
 
@@ -107,6 +118,11 @@ class Task extends HiveObject {
           snapshot["isCompleted"] is bool
               ? snapshot["isCompleted"]
               : (snapshot["isCompleted"]?.toString() == "true"),
+
+      isSynced:
+          snapshot["isSynced"] is bool
+              ? snapshot["isSynced"]
+              : (snapshot["isSynced"]?.toString() == "true"),
     );
   }
 }

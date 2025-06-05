@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_list/features/tasks/presentation/providers/task_provider.dart';
 import 'package:todo_list/main.dart';
-import 'package:todo_list/models/task.dart';
-import 'package:todo_list/common/utils/toasts.dart';
-import 'package:todo_list/common/utils/utils.dart';
+import 'package:todo_list/features/tasks/data/model/task.dart';
+import 'package:todo_list/core/utils/toasts.dart';
+import 'package:todo_list/core/utils/utils.dart';
+import 'package:todo_list/features/tasks/presentation/providers/connectivity_listener.dart';
 
 class TaskScreen extends ConsumerStatefulWidget {
   final Task? task;
@@ -47,14 +49,20 @@ class TaskScreenState extends ConsumerState<TaskScreen> {
 
   void updateTask() async {
     if (isUpdate) {
+      final task = widget.task!;
+
       widget.titleController?.text = title ?? '';
       widget.subtitleController?.text = subtitle ?? '';
 
-      widget.task?.selectedDate = date!;
-      widget.task?.selectedTime = time!;
+      task.title = title ?? "";
+      task.subtitle = subtitle ?? "";
+      task.selectedDate = date!;
+      task.selectedTime = time!;
+      task.isSynced = false;
 
-      widget.task?.save();
+      await ref.read(taskListProvider.notifier).updateTask(task);
       showSuccessToast("Таск амжилттай шинэчлэгдлээ");
+      if (!mounted) return;
       Navigator.pop(context);
     } else {
       if (title != null && subtitle != null) {
@@ -64,10 +72,10 @@ class TaskScreenState extends ConsumerState<TaskScreen> {
           selectedTime: time,
           subtitle: subtitle,
         );
-        BaseApp.of(context).hiveDataStore.addTask(task);
 
+        await ref.read(taskListProvider.notifier).addTask(task);
         showSuccessToast("Таск амжилттай нэмэгдлээ");
-
+        if (!mounted) return;
         Navigator.pop(context);
       } else {
         showErrorToast("Таскийн нэр болон тайлбар хоосон байна");
