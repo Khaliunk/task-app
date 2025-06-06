@@ -19,11 +19,21 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final tasks = ref.watch(taskListProvider);
 
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: ListView.builder(
         itemCount: tasks.length,
         itemBuilder: (context, index) {
           final task = tasks[index];
-          return TaskItem(task: task, ref: ref);
+          if (tasks.isNotEmpty) {
+            return TaskItem(task: task, ref: ref);
+          } else {
+            return Container(
+              child: Text(
+                "Одоогоор таск байхгүй байна",
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+            );
+          }
         },
       ),
     );

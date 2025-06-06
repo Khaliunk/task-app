@@ -12,6 +12,7 @@ class UnCompletedTask extends ConsumerWidget {
     var unCompletedList =
         tasks.where((test) => test.isCompleted == false).toList();
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: ListView.builder(
         itemCount: unCompletedList.length,
         itemBuilder: (context, index) {

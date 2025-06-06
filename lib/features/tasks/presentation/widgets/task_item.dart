@@ -36,57 +36,68 @@ class _TaskItemState extends ConsumerState<TaskItem> {
     subtitleController.dispose();
   }
 
-  deleteTask() {
-    ref.read(taskListProvider.notifier).deleteTask(widget.task);
+  deleteTask() async {
+    await ref.read(taskListProvider.notifier).deleteTask(widget.task);
+    showSuccessToast("Таск амжилттай устгагдлаа");
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(widget.task.title),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder:
-                (_) => TaskScreen(
-                  titleController: titleController,
-                  subtitleController: subtitleController,
-                  task: widget.task,
-                ),
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      elevation: 4,
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: ListTile(
+          title: Text(
+            widget.task.title,
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
-        );
-      },
-      leading: Checkbox(
-        value: widget.task.isCompleted,
-        onChanged: (bool? value) {
-          widget.ref
-              .read(taskListProvider.notifier)
-              .toggleCompleted(widget.task);
-        },
-      ),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(widget.task.subtitle),
-          Text(
-            'Хугацаа: ${dateFormat(widget.task.selectedDate)} ${(widget.task.selectedTime).toString().substring(11, 16)}',
-          ),
-        ],
-      ),
-      trailing: IconButton(
-        icon: const Icon(Icons.delete),
-        onPressed: () {
-          showAlert(
-            context: context,
-            title: "Устгах",
-            content: "Та энэ таскийг устгах гэж байна",
-            onConfirm: () async {
-              await widget.task.delete();
-              showSuccessToast("Таск амжилттай устгагдлаа");
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder:
+                    (_) => TaskScreen(
+                      titleController: titleController,
+                      subtitleController: subtitleController,
+                      task: widget.task,
+                    ),
+              ),
+            );
+          },
+          leading: Checkbox(
+            value: widget.task.isCompleted,
+            onChanged: (bool? value) {
+              widget.ref
+                  .read(taskListProvider.notifier)
+                  .toggleCompleted(widget.task);
             },
-          );
-        },
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(widget.task.subtitle),
+              Text(
+                'Хугацаа: ${dateFormat(widget.task.selectedDate)} ${(widget.task.selectedTime).toString().substring(11, 16)}',
+              ),
+            ],
+          ),
+          trailing: IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              showAlert(
+                context: context,
+                title: "Устгах",
+                content: "Та энэ таскийг устгах гэж байна",
+                onConfirm: () async {
+                  deleteTask();
+                },
+              );
+            },
+          ),
+        ),
       ),
     );
   }

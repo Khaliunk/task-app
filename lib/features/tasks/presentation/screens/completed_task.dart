@@ -12,6 +12,7 @@ class CompletedTask extends ConsumerWidget {
     var completedList =
         tasks.where((test) => test.isCompleted == true).toList();
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: ListView.builder(
         itemCount: completedList.length,
         itemBuilder: (context, index) {

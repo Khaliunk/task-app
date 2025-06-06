@@ -2,9 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:todo_list/features/tasks/data/model/task.dart';
 
 class TaskRemoteDataSource {
-  final FirebaseFirestore firestore;
-
-  TaskRemoteDataSource(this.firestore);
+  final firestore = FirebaseFirestore.instance;
+  TaskRemoteDataSource();
 
   Future<void> uploadTask(Task task) async {
     await firestore.collection('taskApp').add(task.toMap());

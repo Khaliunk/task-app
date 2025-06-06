@@ -1,11 +1,8 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:toastification/toastification.dart';
-import 'package:todo_list/features/tasks/data/datasources/hive_data_store.dart';
-import 'package:todo_list/features/tasks/presentation/providers/task_provider.dart';
 import 'package:todo_list/firebase_options.dart';
 import 'package:todo_list/features/tasks/data/model/task.dart';
 
@@ -30,6 +27,7 @@ class MyApp extends ConsumerWidget {
     return ToastificationWrapper(
       child: MaterialApp(
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),

@@ -1,16 +1,44 @@
 # todo_list
 
-A new Flutter project.
+Flutter task management app.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+ 1. Ажлын жагсаалтын апп хийдэг үйлдлүүд
 
-A few resources to get you started if this is your first Flutter project:
+  - Таск нэмэх, шинэчлэх, устгах
+  - Оффлайн горимд ажиллах
+  - Хийгдээгүй таск ангилагдах
+  - Синк хийгдэх
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+ 2. Ажиллуулах 
+  
+  ```bash
+  git clone https://github.com/Khaliunk/task-app.git
+  cd task-app
+  flutter pub get
+  flutter run
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+ 3.  Folder structure
+
+  lib/
+  ├── core/
+  │    ├── utils/
+  │    ├── constants/
+  │    └── widgets/
+  │
+  ├── features/
+  │    └── tasks/
+  │         ├── data/
+  │         ├── repo/
+  │         └── presentation/
+  │
+  └── main.dart
+
+
+  4. Ашигласан технологи
+
+    - Flutter(SDK 3.29+)
+    - Firebase (Firestore)
+    - Riverpod (state management)
+    - Hive (local storage)
